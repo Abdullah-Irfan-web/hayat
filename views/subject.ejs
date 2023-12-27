@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+    
+        form {
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          width: 300px;
+        }
+    
+        label {
+          display: block;
+          margin-bottom: 8px;
+        }
+    
+        input {
+          width: calc(100% - 8px); /* Adjust width as needed, considering margin */
+          padding: 8px;
+          margin-bottom: 16px;
+          box-sizing: border-box;
+        }
+        select{
+          width: 30%; /* Adjust width as needed, considering margin */
+          padding: 8px;
+          margin-bottom: 26px;
+          box-sizing: border-box;
+          background-color: #4caf50;
+          color: #fff;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+        }
+      
+    
+        .form-row {
+          display: flex;
+          justify-content: space-between;
+
+        }
+    
+        .form-row input {
+          width: calc(48% - 4px); /* Adjust width as needed, considering margin */
+        }
+    
+        button {
+          background-color: #4caf50;
+          color: #fff;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          width: 100%;
+        }
+    
+        button:hover {
+          background-color: #45a049;
+        }
+      </style>
+     
+</head>
+<body>
+    <form action="/add" method="post">
+        <% for(let i=0;i< sub ;i++){%>
+            <div>
+                <div class="form-row">
+                  <label for="subjectName">Subject Name <%=i+1%>:</label>
+                  <input type="text" id="subjectName" name="subjectName<%=i+1%>" required>
+                </div>
+            
+                <div class="form-row">
+                  <label for="subjectNumber">Subject Number:<%=i+1%></label>
+                  <input type="number" id="subjectNumber" name="subjectNumber<%=i+1%>" required>
+                </div>
+            </div>
+       <% }%>
+      
+        <button type="submit">Submit</button>
+      </form>
+
+      
+</body>
+</html>
