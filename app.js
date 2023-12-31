@@ -3,6 +3,7 @@ const express=require('express');
 const app=express();
 const path=require("path");
 const bodyparser=require("body-parser");
+const multer=require('multer');
 const mongoose=require('mongoose');
 app.set('view engine','ejs');
 
@@ -38,7 +39,10 @@ let resultschema=new mongoose.Schema({
     },
     uid:{
         type:String,
-        required:true
+        required:true,
+        unique:true
+        
+        
     },
     fname:{
         type:String,
@@ -64,6 +68,10 @@ let resultschema=new mongoose.Schema({
         type:String,
         required:true
     },
+    image:{
+        type:String
+    },
+
    subjects:[
     {
         SubjectName:{
@@ -85,6 +93,24 @@ let resultschema=new mongoose.Schema({
 })
 let Result=mongoose.model('Result',resultschema)
 
+
+var Storage=multer.diskStorage({
+    destination:(req,file,callback)=>{
+        callback(null,'./public/images/');
+    },
+    filename:(req,file,callback)=>{
+        callback(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
+    }
+});
+var upload=multer({
+    storage:Storage
+}).single('file');
+
+
+
+
+
+
 app.get('/',(req,res)=>{
     res.render('home');
 
@@ -103,7 +129,15 @@ var iname="";
 var status="";
 var cdur="";
 var nosub=0;
+var image="";
 app.post('/subject',(req,res)=>{
+
+    upload(req,res,(err)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+
      name=req.body.name;
      dob=String(req.body.dob);
      uid=req.body.userId;
@@ -114,7 +148,10 @@ app.post('/subject',(req,res)=>{
      nosub=req.body.subjects;
      cdur=String(req.body.cdur);
      status=req.body.status;
+     image=req.file.filename
      res.redirect('/subjects')
+        }
+    })
 })
 app.get('/subjects',(req,res)=>{
     res.render('subject',{sub:nosub});
@@ -155,11 +192,14 @@ let data={
     iname:iname,
     status:status,
     cdur:cdur,
+    image:image,
     subjects:arr
 }
 Result.create(data)
 .then(result=>{
     res.redirect('/')
+}).catch(err=>{
+    res.send("Unable to send data");
 })
 
 })
@@ -169,6 +209,9 @@ app.post('/getresult',(req,res)=>{
     Result.findOne({$and:[{uid:uid},{dob:dob}]})
     .then(result=>{
         res.render('result',{result:result});
+    })
+    .catch(err=>{
+        res.send("Unable to fetch details. Student Data Not Available/Enter Correct Data")
     })
 })
 app.listen('3000',()=>{

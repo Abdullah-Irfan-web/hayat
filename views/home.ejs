@@ -17,7 +17,7 @@
         }
     
         form {
-          margin-top: 20%;
+          margin-top: 23%;
          
           background-color: #fff;
           border-radius: 8px;
@@ -74,7 +74,7 @@
      
 </head>
 <body>
-    <form action="/subject" method="post">
+    <form action="/subject" method="post" enctype="multipart/form-data">
            
         <label for="userId">Registration ID:</label>
         <input type="text" id="userId" name="userId" required>
@@ -109,6 +109,10 @@
           <option value="Pass">Pass</option>
           <option value="Fail">Fail</option>
          </select>
+        </div>
+        <div class="form-row">
+          <label for="status">Upload Image:</label>
+          <input type="file" name="file" id="image" >
         </div>
     
         <button type="submit">Submit</button>
